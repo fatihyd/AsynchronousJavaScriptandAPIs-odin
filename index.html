@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <div>
+        <form action="">
+            <input type="text" placeholder="search for gifs...">
+            <input type="submit" value="search">
+        </form>
+
+    </div>
+
+    <button>get cat!</button>
+
+    <img src="#">
+
+    <script>
+        const form = document.querySelector("form");
+        const searchInput = document.querySelector("input[type='text']");
+        const buttonElement = document.querySelector("button");
+        const imgElement = document.querySelector("img");
+
+        const giphyApiEndpoint = 'https://api.giphy.com/v1/gifs/translate';
+        const apiKey = 'wrh9poinocYAdSumfg2ofHs8ZBi25GQR';
+
+        getImage('cats');
+        buttonElement.addEventListener("click", () => {
+            getImage('cats');
+        });
+
+        form.addEventListener("submit", () => {
+            event.preventDefault();
+            getImage(searchInput.value);
+        });
+
+        function getImage(searchTerm) {
+            let apiURL = giphyApiEndpoint + '?api_key=' + apiKey + '&s=' + searchTerm;
+            fetch(apiURL, { mode: 'cors' })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((response) => {
+                    if (response.data.length !== 0) {
+                        imgElement.src = response.data.images.original.url;
+                    } else {
+                        imgElement.src = 'https://media0.giphy.com/media/8L0Pky6C83SzkzU55a/giphy.gif?cid=ecf05e47mn5o15r4ugqr133ob73p0dn073dqja2yrdd73yao&ep=v1_gifs_search&rid=giphy.gif&ct=g';
+                        console.log("empty search input error!");
+                    }
+                })
+                .catch((error) => {
+                    imgElement.src = 'https://media0.giphy.com/media/8L0Pky6C83SzkzU55a/giphy.gif?cid=ecf05e47mn5o15r4ugqr133ob73p0dn073dqja2yrdd73yao&ep=v1_gifs_search&rid=giphy.gif&ct=g';
+                    console.log(error);
+                });
+        }
+    </script>
+</body>
+
+</html>
