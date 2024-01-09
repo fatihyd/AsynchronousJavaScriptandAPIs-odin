@@ -40,7 +40,7 @@
             event.preventDefault();
             getImage(searchInput.value);
         });
-
+        /*
         function getImage(searchTerm) {
             let apiURL = giphyApiEndpoint + '?api_key=' + apiKey + '&s=' + searchTerm;
             fetch(apiURL, { mode: 'cors' })
@@ -59,6 +59,25 @@
                     imgElement.src = 'https://media0.giphy.com/media/8L0Pky6C83SzkzU55a/giphy.gif?cid=ecf05e47mn5o15r4ugqr133ob73p0dn073dqja2yrdd73yao&ep=v1_gifs_search&rid=giphy.gif&ct=g';
                     console.log(error);
                 });
+            */
+        async function getImage(searchTerm) {
+            let apiURL = giphyApiEndpoint + '?api_key=' + apiKey + '&s=' + searchTerm;
+            try {
+                const response = await fetch(apiURL, { mode: 'cors' });
+                const responseData = await response.json();
+
+                // this if statement checks to see if the searched term is empty (null or defined)
+                // responseData.data.images !== null && responseData.data.images !== undefined
+                if (responseData.data.images) {
+                    imgElement.src = responseData.data.images.original.url;
+                } else {
+                    imgElement.src = 'https://media0.giphy.com/media/8L0Pky6C83SzkzU55a/giphy.gif?cid=ecf05e47mn5o15r4ugqr133ob73p0dn073dqja2yrdd73yao&ep=v1_gifs_search&rid=giphy.gif&ct=g';
+                    console.log("empty search input error!");
+                }
+            } catch (error) {
+                imgElement.src = 'https://media0.giphy.com/media/8L0Pky6C83SzkzU55a/giphy.gif?cid=ecf05e47mn5o15r4ugqr133ob73p0dn073dqja2yrdd73yao&ep=v1_gifs_search&rid=giphy.gif&ct=g';
+                console.log(error);
+            }
         }
     </script>
 </body>
